@@ -1,111 +1,106 @@
-:root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+@import './styles/fonts.generated.css';
 
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
+@layer base {
   :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
+    /* Hero geometry — single source for layout AND the dot's pre-JS CSS
+       positions. Mark: logo-master m at 96px (h-24); its dot center sits
+       at 87.4% of mark height (632-368)/302, dia 24px (76/302 × 96). */
+    --hero-top: 22vh;
+    --dot-size: 24px;
   }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
+  html {
+    /* Static font instances only — never synthesize weights/slants. */
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
   }
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-}
-
-body {
-  margin: 0;
-}
-
-h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
-}
-
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
+  body {
+    @apply bg-surface-canvas font-sans text-content-primary;
   }
 }
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
+
+/* ---------------------------------------------------------------------------
+   The dot (#dot lives in index.html, outside #root). The hero drop is pure
+   CSS — it must play before any 3D asset (or even React) loads. Easing per
+   segment references the Results-Screen family by name (tokens.ts /
+   mishi-mobile motion.ts). After the drop+pulse, src/dot/render.ts takes
+   over via .dot-js. */
+#dot {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: var(--dot-size);
+  height: var(--dot-size);
+  z-index: 40;
+  pointer-events: none;
+  will-change: transform;
+  --dot-hero-tx: calc(50vw - var(--dot-size) / 2);
+  --dot-hero-ty: calc(var(--hero-top) + 84px - var(--dot-size) / 2);
+  /* Resting state is ABOVE the viewport: if the animation starts late for
+     any reason, the dot is simply not there yet — it can never be seen
+     settled and then jump backward/up to begin its fall. */
+  transform: translate(var(--dot-hero-tx), calc(-6vh - var(--dot-size)));
+  /* fill-modes: drop fills forwards (holds the settle); the pulse must NOT
+     fill backwards — with `both` its delay phase pins the dot at the
+     settled position and fights the drop (the "backward move" bug). */
+  animation:
+    dot-drop 1.2s forwards,
+    dot-pulse 0.7s 1.9s forwards;
+}
+#dot.dot-js {
+  animation: none;
+}
+
+@keyframes dot-drop {
+  0% {
+    transform: translate(var(--dot-hero-tx), calc(-6vh - var(--dot-size))) scale(1, 1);
+    /* free fall — accelerating */
+    animation-timing-function: cubic-bezier(0.5, 0, 0.9, 0.6);
+  }
+  58% {
+    /* impact squash — 'enter' cubic-bezier(0.05, 0.7, 0.1, 1) */
+    transform: translate(var(--dot-hero-tx), var(--dot-hero-ty)) scale(1.3, 0.7);
+    animation-timing-function: cubic-bezier(0.05, 0.7, 0.1, 1);
+  }
+  74% {
+    /* rebound stretch — 'dot' cubic-bezier(0.34, 1.3, 0.4, 1) */
+    transform: translate(var(--dot-hero-tx), calc(var(--dot-hero-ty) - 16px)) scale(0.94, 1.08);
+    animation-timing-function: cubic-bezier(0.34, 1.3, 0.4, 1);
+  }
+  100% {
+    transform: translate(var(--dot-hero-tx), var(--dot-hero-ty)) scale(1, 1);
   }
 }
-p {
-  margin: 0;
+
+/* Scroll cue: the dot pulses once. No arrow icons. */
+@keyframes dot-pulse {
+  0%,
+  100% {
+    transform: translate(var(--dot-hero-tx), var(--dot-hero-ty)) scale(1);
+  }
+  50% {
+    transform: translate(var(--dot-hero-tx), var(--dot-hero-ty)) scale(1.18);
+  }
 }
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
+@media (prefers-reduced-motion: reduce) {
+  #dot {
+    /* no drop, no pulse — the dot is simply present, settled
+       (the base transform is off-screen, so place it explicitly) */
+    animation: none;
+    transform: translate(var(--dot-hero-tx), var(--dot-hero-ty));
+  }
 }
 
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+/* Static-narrative tier (§3 reduced-motion fallback): the dot rests in the
+   hero and scrolls away with it; each act's composed still carries its own
+   dot mark (the doc-sanctioned exception to the animated one-dot rule). */
+html.tier-static #dot {
+  position: absolute;
+  animation: none;
+  transform: translate(var(--dot-hero-tx), var(--dot-hero-ty));
 }

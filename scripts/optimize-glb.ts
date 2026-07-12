@@ -1,9 +1,8 @@
 // Mishi landing — 3D asset pipeline (Phase 0).
 //
-// Reads the ORIGINAL assets in public/3D/ and writes compressed,
-// self-contained GLBs alongside them. The app only ever loads the
-// compressed outputs; originals must be excluded from the deploy
-// artifact (vite config, Phase 1).
+// Reads the ORIGINAL assets in assets-src/ (outside public/, so they
+// can never reach the deploy artifact — DL13) and writes compressed,
+// self-contained GLBs into public/3D/, the only 3D files the app loads.
 //
 //   npm run optimize:glb
 //
@@ -25,9 +24,15 @@ import draco3d from 'draco3dgltf';
 // Draco quantization — explicit so the evidence report states real numbers.
 const QUANTIZE = { quantizePosition: 14, quantizeNormal: 10, quantizeTexcoord: 12 };
 
-const ASSETS = [
-  { in: 'public/3D/iphone_16_-_free.glb', out: 'public/3D/phone.draco.glb' },
-  { in: 'public/3D/plate/scene.gltf', out: 'public/3D/plate.draco.glb' },
+// textureCodec 'webp': KTX2 (uastc AND etc1s) renders corrupted through the
+// GPU transcode path on iOS-family WebGL (verified in simulator: CPU-side
+// `ktx extract` of the same file is pixel-perfect, GPU render is garbage —
+// DL38). WebP-in-GLB decodes universally and is 8× smaller here. The KTX2
+// stage below stays wired for assets where it proves out.
+const ASSETS: { in: string; out: string; baseColorTexture?: string; textureCodec?: 'webp' | 'ktx2' }[] = [
+  { in: 'assets-src/iphone_16_-_free.glb', out: 'public/3D/phone.draco.glb' },
+  // DL4 (Aziiz): plate_texture.png wired as the plate's base color.
+  { in: 'assets-src/plate/scene.gltf', out: 'public/3D/plate.draco.glb', baseColorTexture: 'assets-src/plate_texture.png', textureCodec: 'webp' },
 ];
 
 const BUDGET_BYTES = 2 * 1024 * 1024; // hard gate: ≤ 2MB per GLB post-compression
@@ -99,16 +104,46 @@ async function main() {
     const before = collectStats(await io.read(asset.in), inputBytes(asset.in));
 
     const doc = await io.read(asset.in);
+
+    // Wire an external base-color texture onto a material that shipped
+    // without one (the plate, DL4). Resized to 1024² before KTX2.
+    if (asset.baseColorTexture) {
+      const sharp = (await import('sharp')).default;
+      const img = sharp(asset.baseColorTexture).resize(1024, 1024);
+      const useWebp = asset.textureCodec === 'webp';
+      const resized = useWebp ? await img.webp({ quality: 82 }).toBuffer() : await img.png().toBuffer();
+      const texture = doc
+        .createTexture('baseColor')
+        .setImage(new Uint8Array(resized))
+        .setMimeType(useWebp ? 'image/webp' : 'image/png');
+      for (const material of doc.getRoot().listMaterials()) {
+        material.setBaseColorTexture(texture);
+        material.setBaseColorFactor([1, 1, 1, 1]);
+      }
+      before.bytes += statSync(asset.baseColorTexture).size;
+    }
+
+    // The plate's photogrammetry normals are noisy (radial shading
+    // artifacts) — strip them here (smaller GLB) and let three.js
+    // computeVertexNormals() rebuild smooth ones at load (Stage.tsx).
+    if (asset.baseColorTexture) {
+      for (const mesh of doc.getRoot().listMeshes()) {
+        for (const prim of mesh.listPrimitives()) prim.setAttribute('NORMAL', null);
+      }
+    }
     await doc.transform(dedup(), prune(), weld(), draco(QUANTIZE));
     await io.write(asset.out, doc);
 
     // KTX2 stage — gltf-transform CLI shells out to the ktx/toktx binaries.
+    // Skipped for webp-codec assets (DL38).
     const readBack = await io.read(asset.out);
-    if (readBack.getRoot().listTextures().length > 0) {
+    if (asset.textureCodec !== 'webp' && readBack.getRoot().listTextures().length > 0) {
       const tmp = `${asset.out}.ktx2-tmp.glb`;
       execFileSync(
         'npx',
-        ['--no-install', 'gltf-transform', 'uastc', asset.out, tmp, '--level', '2', '--zstd', '18'],
+        // uastc: etc1s transcode produced garbage in simulator WebGL (see
+        // decisions-landing DL38); uastc transcodes reliably
+        ['--no-install', 'gltf-transform', 'uastc', asset.out, tmp, '--level', '2', '--zstd', '18', '--mipmaps', 'true'],
         {
           stdio: 'inherit',
           env: { ...process.env, PATH: `${process.env.PATH}${delimiter}${join(homedir(), '.local/bin')}` },

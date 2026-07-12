@@ -28,6 +28,12 @@ export default {
     extend: {
       transitionDuration: motion.duration,
       transitionTimingFunction: motion.easing,
+      // Landing type scale (Phase 1 minimum — Phase 4 typesets the acts).
+      // The app's fixed mobile sizes don't fit a fluid landing viewport.
+      fontSize: {
+        'landing-hero': ['clamp(2.25rem, 5.5vw, 4.75rem)', { lineHeight: '1.08', letterSpacing: '-0.5px' }],
+        'landing-sub': ['clamp(1rem, 2vw, 1.375rem)', { lineHeight: '1.4' }],
+      },
     },
   },
 } satisfies Config;

@@ -1,13 +1,56 @@
 <!doctype html>
-<html lang="en">
+<html lang="fr">
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>mishi-frontend</title>
+    <meta name="theme-color" content="%MISHI_SURFACE_CANVAS%" />
+
+    <title>Mishi — Une photo. Une recommandation. Moins de 60 secondes.</title>
+    <meta name="description" content="Tu regardes le menu. Le menu te regarde. Une photo. Une recommandation. Moins de 60 secondes." />
+
+    <!-- Open Graph / link previews. og:url + og:image blocked by D4 (domain
+         unresolved) — add both before deploy, see docs/decisions-landing.md. -->
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="fr_SN" />
+    <meta property="og:title" content="Mishi — Tu regardes le menu. Le menu te regarde." />
+    <meta property="og:description" content="Une photo. Une recommandation. Moins de 60 secondes." />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Mishi — Tu regardes le menu. Le menu te regarde." />
+    <meta name="twitter:description" content="Une photo. Une recommandation. Moins de 60 secondes." />
+
+    <link rel="preload" href="/fonts/Fraunces-DisplayHero.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/InstrumentSans-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <!-- hero illustration is the LCP -->
+    <link rel="preload" as="image" imagesrcset="/hero/hero-800.avif 800w, /hero/hero-1200.avif 1200w, /hero/hero-1672.avif 1672w" imagesizes="100vw" fetchpriority="high" />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <!-- Pre-hydration shell: the hero promise must be readable before any
+           JS executes (and by crawlers). React's Act 0 renders identical
+           markup, so replacement is invisible. Copy is verbatim from
+           docs/mishi-landing-concept.md — do not edit here without editing
+           App.tsx in lockstep (Phase 4 copy-diff audits both). -->
+      <main>
+        <section id="act-0" class="relative flex min-h-screen flex-col items-center bg-surface-canvas px-6 pt-[var(--hero-top)] text-center">
+          <picture class="pointer-events-none absolute inset-0" aria-hidden="true">
+            <source type="image/avif" srcset="/hero/hero-800.avif 800w, /hero/hero-1200.avif 1200w, /hero/hero-1672.avif 1672w" sizes="100vw" />
+            <img src="/hero/hero-1200.webp" srcset="/hero/hero-800.webp 800w, /hero/hero-1200.webp 1200w, /hero/hero-1672.webp 1672w" sizes="100vw" alt="" fetchpriority="high" class="h-full w-full object-cover object-bottom" />
+          </picture>
+          <svg viewBox="288 368 448 302" class="relative h-24 w-auto text-content-primary" data-dot-anchor="hero-mark" aria-hidden="true">
+            <path d="M 330 628 L 330 501 A 91 91 0 0 1 512 501 A 91 91 0 0 1 694 501 L 694 628" fill="none" stroke="currentColor" stroke-width="84" stroke-linecap="round" stroke-linejoin="round" />
+            <path d="M 512 501 L 512 525" fill="none" stroke="currentColor" stroke-width="84" stroke-linecap="round" />
+          </svg>
+          <h1 class="relative mt-12 font-display-hero text-landing-hero text-content-primary">Tu regardes le menu. Le menu te regarde.</h1>
+          <p class="relative mt-6 max-w-xl font-sans text-landing-sub text-content-secondary">Une photo. Une recommandation. Moins de 60 secondes.</p>
+        </section>
+      </main>
+    </div>
+    <!-- THE dot — the page's one protagonist. A singleton OUTSIDE #root:
+         React never mounts/replaces it, its CSS hero drop plays before any
+         JS executes, and there is exactly one of it, always. Only
+         src/dot/render.ts may write to its style. -->
+    <div id="dot" class="rounded-full bg-accent" aria-hidden="true"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
