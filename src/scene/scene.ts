@@ -74,32 +74,3 @@ export function compileSceneTimeline(tl: gsap.core.Timeline, dom: SceneDomTarget
     tl.fromTo(dom.resultCard, { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.05, ease: EASE.enter }, 0.6);
   }
 }
-
-// Act 1 — Le Chaos. The hero's quiet menu lines flood forward: layers rise
-// at different rates (parallax; Tier B mounts only 2 layers — §3), later
-// layers multiply in, contrast rises. One line holds still amid it all.
-// Chanel rule: opacity + translate only.
-export function compileChaosTimeline(
-  tl: gsap.core.Timeline,
-  chaos: { layers: HTMLElement[]; heldLine: HTMLElement | null },
-): void {
-  registerDotEases();
-
-  chaos.layers.forEach((layer, i) => {
-    tl.fromTo(
-      layer,
-      { yPercent: 7 + i * 6, opacity: i === 0 ? 0.4 : 0 },
-      {
-        yPercent: -(5 + i * 6),
-        opacity: 0.55 + i * 0.15, // contrast rising, deeper layers denser
-        duration: 0.2,
-        ease: EASE.standard,
-      },
-      0.13 + i * 0.025, // later layers "multiply" in
-    );
-  });
-
-  if (chaos.heldLine) {
-    tl.fromTo(chaos.heldLine, { opacity: 0 }, { opacity: 1, duration: 0.04, ease: EASE.enter }, 0.215);
-  }
-}

@@ -1,0 +1,52 @@
+{
+  "comment": "Act 1 menu labyrinth — dish names verbatim from menu-lines.json (A7 ground truth), grouped into the unfolded menu's panels. 14 dishes total: the held line's count. Prices are deliberately generic and currency-free (DL59) — Act 1 sells the universal problem; the FCFA reality lives in Acts 3–4. Descriptions exist only on the dot's three hesitation targets (DL60): more information, never clarity.",
+  "panels": [
+    {
+      "id": "entrees",
+      "category": "Entrées",
+      "items": [
+        { "id": "pastels", "name": "Pastels (×4)", "price": "12" },
+        { "id": "fataya-viande", "name": "Fataya à la viande (×3)", "price": "14" },
+        {
+          "id": "nems-poulet",
+          "name": "Nems au poulet (×6)",
+          "price": "16",
+          "description": "Croustillants, sauce aigre-douce maison, coriandre fraîche. Par six."
+        },
+        { "id": "salade-fraicheur", "name": "Salade fraîcheur", "price": "18" }
+      ]
+    },
+    {
+      "id": "plats",
+      "category": "Plats",
+      "items": [
+        { "id": "thieboudienne-rouge", "name": "Thiéboudienne rouge", "price": "24" },
+        {
+          "id": "poulet-yassa",
+          "name": "Poulet Yassa",
+          "price": "21",
+          "description": "Oignons confits au citron, olives, riz brisé. Accompagnement au choix, selon arrivage."
+        },
+        { "id": "mafe-boeuf", "name": "Mafé de bœuf", "price": "19" },
+        { "id": "soupe-kandia", "name": "Soupe kandia", "price": "22" },
+        { "id": "domoda", "name": "Domoda", "price": "18" },
+        { "id": "attieke-poisson", "name": "Attiéké poisson", "price": "26" }
+      ]
+    },
+    {
+      "id": "grillades",
+      "category": "Grillades",
+      "items": [
+        {
+          "id": "dibi-mouton",
+          "name": "Dibi mouton",
+          "price": "32",
+          "description": "Grillé au feu de bois, oignons, moutarde. Portion selon le marché du jour."
+        },
+        { "id": "poulet-braise", "name": "Poulet braisé", "price": "27" },
+        { "id": "poisson-braise", "name": "Poisson braisé", "price": "29" },
+        { "id": "brochettes-boeuf", "name": "Brochettes de bœuf", "price": "31" }
+      ]
+    }
+  ]
+}

@@ -7,10 +7,11 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 
+import { compileChaosTimeline } from '../chaos/timeline';
 import { compileDotPath } from '../dot/path';
 import { startDotRenderer } from '../dot/render';
 import type { Tier } from '../lib/tier';
-import { compileChaosTimeline, compileSceneTimeline } from '../scene/scene';
+import { compileSceneTimeline } from '../scene/scene';
 import { colors } from '../theme/tokens';
 
 export const ACT_LABELS = ['act0', 'act1', 'act2', 'act3', 'act4', 'act5'] as const;
@@ -65,8 +66,12 @@ export function createScrollSpine(container: HTMLElement, tier: Tier, dotEl: HTM
     cream: colors.surface.canvas,
   });
   compileChaosTimeline(timeline, {
-    layers: [...container.querySelectorAll<HTMLElement>('[data-chaos-layer]')],
-    heldLine: document.getElementById('held-line'),
+    stage: container.querySelector<HTMLElement>('[data-chaos-stage]'),
+    panels: [...container.querySelectorAll<HTMLElement>('[data-chaos-panel]')],
+    reveals: [...container.querySelectorAll<HTMLElement>('[data-chaos-reveal]')],
+    copyLines: [...container.querySelectorAll<HTMLElement>('[data-chaos-copy-line]')],
+    scrim: container.querySelector<HTMLElement>('[data-chaos-scrim]'),
+    frame: container.querySelector<HTMLElement>('[data-chaos-frame]'),
   });
 
   return {

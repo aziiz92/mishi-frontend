@@ -1,8 +1,8 @@
 import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 
+import { MenuChaosSection } from './chaos/MenuChaosSection';
 import { auditSummary, startDotAudit } from './dot/audit';
 import { track, trackActViewed, trackTierServed, type CtaId } from './lib/analytics';
-import { chaosLeft, chaosTilt, chaosTop, formatPrice, MENU_LINES } from './lib/menu';
 import { detectTier, type Tier } from './lib/tier';
 import { SequencePlayer } from './scene/SequencePlayer';
 import { frameSrc } from './scene/sequence';
@@ -205,45 +205,11 @@ function App() {
         </p>
       </section>
 
-      {/* Act 1 — Le Chaos. The hero's menu lines flood forward — 30+ real
-          dishes, overlapping, tilted, contrast rising (parallax layers on
-          the master timeline; Tier B gets the 2-layer version). The dot
-          hesitates between them. One line holds still. */}
-      <section id="act-1"
-        aria-label="Le Chaos" data-act="1" className="relative z-10 min-h-screen overflow-hidden">
-        {[0, 1, 2].slice(0, tier === 'tierA' ? 3 : 2).map((layer) => (
-          <div
-            key={layer}
-            data-chaos-layer={layer}
-            className="absolute inset-0"
-            style={isStatic ? { opacity: 0.6 } : undefined}
-            aria-hidden={layer > 0}
-          >
-            {MENU_LINES.slice(layer * 13, layer * 13 + 13).map((d, i) => {
-              const n = layer * 13 + i;
-              const anchor = layer === 0 && (i === 2 || i === 6 || i === 10)
-                ? { 'data-dot-anchor': `chaos-${i === 2 ? 1 : i === 6 ? 2 : 3}` }
-                : {};
-              return (
-                <span
-                  key={d.name}
-                  {...anchor}
-                  className="absolute whitespace-nowrap font-sans text-sm text-content-secondary"
-                  style={{ top: `${chaosTop(n)}%`, left: `${chaosLeft(n)}%`, transform: `rotate(${chaosTilt(n)}deg)` }}
-                >
-                  {d.name} <span className="tabular-nums">{formatPrice(d.price)}</span>
-                </span>
-              );
-            })}
-          </div>
-        ))}
-        <p id="held-line" className={`absolute inset-0 z-10 flex items-center justify-center ${isStatic ? 'opacity-100' : 'opacity-0'}`}>
-          <span className="bg-surface-canvas/85 px-5 py-3 text-center font-display-title text-2xl text-content-primary">
-            14 plats. 0 photo. Le serveur attend.
-          </span>
-        </p>
-        {isStatic && <span aria-hidden="true" className="absolute left-[24%] top-[30%] z-10 h-6 w-6 rounded-full bg-accent" />}
-      </section>
+      {/* Act 1 — Le Chaos: the menu labyrinth (DL57). The hero menu lifts,
+          unfolds into paper panels that become the room, closes in, and
+          collapses into the scan frame. DOM in src/chaos/, motion on the
+          master timeline (src/chaos/timeline.ts). */}
+      <MenuChaosSection tier={tier} />
 
       {/* Act 2 — Le Scan. The one espresso act (D1 ratified). The phone GLB
           (Tier A) / frames (Tier B) render at the anchor; the dot flies into

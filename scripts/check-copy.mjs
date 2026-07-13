@@ -11,6 +11,7 @@ const read = (p) => readFileSync(p, 'utf8');
 const sources = {
   'index.html': read('index.html'),
   'src/App.tsx': read('src/App.tsx'),
+  'src/chaos/ChaosCopy.tsx': read('src/chaos/ChaosCopy.tsx'),
   'scripts/bake-screens.mjs': read('scripts/bake-screens.mjs'),
 };
 
@@ -18,7 +19,9 @@ const sources = {
 const COPY = [
   ['Tu regardes le menu. Le menu te regarde.', ['index.html', 'src/App.tsx'], 'Act 0 headline (+ pre-JS shell)'],
   ['Une photo. Une recommandation. Moins de 60 secondes.', ['index.html', 'src/App.tsx'], 'Act 0 sub (+ shell)'],
-  ['14 plats. 0 photo. Le serveur attend.', ['src/App.tsx'], 'Act 1 held line'],
+  ['14 plats.', ['src/chaos/ChaosCopy.tsx'], 'Act 1 held line 1/3 (DL58: three lines, one per pressure beat)'],
+  ['Aucune photo.', ['src/chaos/ChaosCopy.tsx'], 'Act 1 held line 2/3'],
+  ['Le serveur attend.', ['src/chaos/ChaosCopy.tsx'], 'Act 1 held line 3/3'],
   ['Mishi lit le menu comme un ami qui vit ici.', ['src/App.tsx'], 'Act 2 copy'],
   ['Un seul plat. Choisi pour toi.', ['src/App.tsx'], 'Act 3 copy'],
   ['On ne te ment jamais sur la photo.', ['src/App.tsx'], 'Act 4 panel 2'],
