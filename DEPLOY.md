@@ -12,17 +12,17 @@ is managed by Dokploy, is the only public reverse proxy.
 - Production promotion is a pull request from `develop` to `main`.
 
 The `CI` workflow runs on pull requests and pushes targeting `develop` or
-`main`. Its deploy job depends on both check jobs and only runs for a successful
-push workflow, so pull requests never trigger a deployment.
+`main`. Dokploy handles deployment directly through its GitHub integration, so
+GitHub Actions stores no Dokploy URL, API key or application ID.
 
 ## Dokploy applications
 
 Create two separate Dokploy applications from this repository:
 
-| Environment | Git branch | GitHub environment | Container port |
-| --- | --- | --- | --- |
-| Development | `develop` | `development` | `8080` |
-| Production | `main` | `production` | `8080` |
+| Environment | Git branch | Container port |
+| --- | --- | --- |
+| Development | `develop` | `8080` |
+| Production | `main` | `8080` |
 
 For both applications:
 
@@ -33,26 +33,18 @@ For both applications:
 - configure the health check path as `/healthz`;
 - do not publish a host port;
 - do not add Caddy TLS configuration;
-- disable Dokploy's direct Git auto-deploy so a push cannot bypass CI.
+- enable Dokploy Auto Deploy for the configured branch.
 
 DNS, domains, certificates and public ports `80/443` remain managed by
 Cloudflare and Dokploy/Traefik.
 
 ## GitHub configuration
 
-Create GitHub environments named `development` and `production`. Add this
-environment secret to each one, using the matching Dokploy application ID:
-
-- `DOKPLOY_APPLICATION_ID`
-
-Add these repository or organization secrets:
-
-- `DOKPLOY_URL`: the Dokploy base URL, without a trailing slash;
-- `DOKPLOY_API_KEY`: a Dokploy API token allowed to deploy these applications.
-
 Protect `develop` and `main` with the `Lint, test and build` and
-`Build container` checks. Require pull requests for both branches. Production
-may additionally require approval on the GitHub `production` environment.
+`Build container` checks. Require pull requests for both branches and prevent
+direct pushes. This matters because Dokploy Auto Deploy reacts to a branch push
+independently of the CI workflow running for that same push. With protected
+branches, a deployed merge has already passed the required pull-request checks.
 
 ## Local verification
 
