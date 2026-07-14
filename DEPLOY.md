@@ -5,7 +5,7 @@ is managed by Dokploy, is the only public reverse proxy.
 
 ## Branch flow
 
-- `develop` is the integration and development deployment branch.
+- `develop` is the integration branch and is not deployed.
 - `main` is the production branch.
 - Feature branches start from an up-to-date `develop` branch.
 - Pull requests target `develop` first.
@@ -15,16 +15,15 @@ The `CI` workflow runs on pull requests and pushes targeting `develop` or
 `main`. Dokploy handles deployment directly through its GitHub integration, so
 GitHub Actions stores no Dokploy URL, API key or application ID.
 
-## Dokploy applications
+## Dokploy application
 
-Create two separate Dokploy applications from this repository:
+Create one Dokploy application from this repository:
 
 | Environment | Git branch | Container port |
 | --- | --- | --- |
-| Development | `develop` | `8080` |
 | Production | `main` | `8080` |
 
-For both applications:
+For this application:
 
 - use build type `Dockerfile`;
 - set Build Path to `/`;
@@ -33,7 +32,7 @@ For both applications:
 - configure the health check path as `/healthz`;
 - do not publish a host port;
 - do not add Caddy TLS configuration;
-- enable Dokploy Auto Deploy for the configured branch.
+- enable Dokploy Auto Deploy for `main`.
 
 DNS, domains, certificates and public ports `80/443` remain managed by
 Cloudflare and Dokploy/Traefik.
@@ -43,8 +42,10 @@ Cloudflare and Dokploy/Traefik.
 Protect `develop` and `main` with the `Lint, test and build` and
 `Build container` checks. Require pull requests for both branches and prevent
 direct pushes. This matters because Dokploy Auto Deploy reacts to a branch push
-independently of the CI workflow running for that same push. With protected
-branches, a deployed merge has already passed the required pull-request checks.
+independently of the CI workflow running for that same push. Only `main` is
+connected to Dokploy, so merges into `develop` run CI without deploying. With
+protected branches, a production deployment from `main` has already passed the
+required pull-request checks.
 
 ## Local verification
 
