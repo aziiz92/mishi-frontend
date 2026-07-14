@@ -3,12 +3,12 @@
  * worlds: Tailwind (tailwind.config.ts imports this) and Three.js
  * (materials/uniforms import this). Zero raw hex anywhere else.
  *
- * Mirrors the app's canonical /tailwind.config.js — verified hex-for-hex
- * by scripts/check-tokens.ts (runs as prebuild). If design-system.md and
- * this file disagree, the doc wins.
+ * scripts/check-tokens.ts verifies that Tailwind consumes these exact objects
+ * during every build. Cross-repository mobile alignment is handled separately;
+ * this landing repository remains independently buildable.
  */
 
-// Primitive layer — internal. Exported ONLY for the mirror check; components
+// Primitive layer — internal. Exported only for token auditing; components
 // and materials use the semantic `colors` below (you cannot write bg-saffron).
 export const palette = {
   espresso: '#1C1714',

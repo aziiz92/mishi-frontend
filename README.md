@@ -1,5 +1,8 @@
 # React + TypeScript + Vite
 
+Deployment and branch configuration for the Mishi landing page is documented
+in [DEPLOY.md](./DEPLOY.md).
+
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
 Currently, two official plugins are available:
