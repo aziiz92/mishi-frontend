@@ -12,8 +12,8 @@ is managed by Dokploy, is the only public reverse proxy.
 - Production promotion is a pull request from `develop` to `main`.
 
 The `CI` workflow runs on pull requests and pushes targeting `develop` or
-`main`. The `Deploy` workflow only runs after a successful `CI` push workflow,
-so pull requests never trigger a deployment.
+`main`. Its deploy job depends on both check jobs and only runs for a successful
+push workflow, so pull requests never trigger a deployment.
 
 ## Dokploy applications
 
