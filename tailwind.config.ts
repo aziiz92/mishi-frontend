@@ -6,7 +6,7 @@
  */
 import type { Config } from 'tailwindcss';
 
-import { colors, motion } from './src/theme/tokens';
+import { colors, motion } from './src/theme/tokens.ts';
 
 export default {
   content: ['./index.html', './src/**/*.{ts,tsx}'],
