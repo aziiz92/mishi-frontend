@@ -1,28 +1,11 @@
-// Mishi landing — token mirror check (Phase 0). Runs as `prebuild`.
+// Mishi landing — token wiring check. Runs as `prebuild`.
 //
-// The landing's src/theme/tokens.ts must match the app's canonical
-// /tailwind.config.js (repo root) hex-for-hex and name-for-name, for
-// both the semantic color tree and the motion tokens. Any drift fails
-// the build.
-
-import { createRequire } from 'node:module';
-import { dirname, resolve } from 'node:path';
-import { fileURLToPath } from 'node:url';
+// This repository must build on its own in CI and Dokploy, so it cannot read
+// configuration from the mobile repository. Instead, this check guarantees
+// that Tailwind consumes the landing's canonical color and motion objects.
 
 import { colors, motion } from '../src/theme/tokens.ts';
-
-const here = dirname(fileURLToPath(import.meta.url));
-const require = createRequire(import.meta.url);
-
-// The app config loads `nativewind/preset` (not installed here, not needed
-// for token comparison) — stub that one module id before requiring it.
-const Module = require('node:module');
-const origLoad = Module._load;
-Module._load = function (request: string, ...rest: unknown[]) {
-  if (request === 'nativewind/preset') return {};
-  return origLoad.call(this, request, ...rest);
-};
-const appConfig = require(resolve(here, '../../tailwind.config.js'));
+import tailwindConfig from '../tailwind.config.ts';
 
 type Tree = { [key: string]: string | Tree };
 
@@ -39,12 +22,22 @@ function diff(expected: Tree, actual: Tree, path: string, out: string[]): void {
 }
 
 const problems: string[] = [];
-diff(appConfig.theme.colors, colors as unknown as Tree, 'colors', problems);
-diff(appConfig.theme.extend.transitionDuration, motion.duration as unknown as Tree, 'motion.duration', problems);
-diff(appConfig.theme.extend.transitionTimingFunction, motion.easing as unknown as Tree, 'motion.easing', problems);
+diff(tailwindConfig.theme.colors as unknown as Tree, colors as unknown as Tree, 'colors', problems);
+diff(
+  tailwindConfig.theme.extend.transitionDuration as unknown as Tree,
+  motion.duration,
+  'motion.duration',
+  problems,
+);
+diff(
+  tailwindConfig.theme.extend.transitionTimingFunction as unknown as Tree,
+  motion.easing,
+  'motion.easing',
+  problems,
+);
 
 if (problems.length > 0) {
-  console.error('TOKEN MIRROR FAILED — landing tokens drift from /tailwind.config.js:');
+  console.error('TOKEN WIRING FAILED — Tailwind and landing tokens differ:');
   for (const p of problems) console.error(`  - ${p}`);
   process.exit(1);
 }
@@ -52,6 +45,6 @@ if (problems.length > 0) {
 const count = (t: Tree): number =>
   Object.values(t).reduce<number>((n, v) => n + (typeof v === 'string' ? 1 : count(v)), 0);
 console.log(
-  `TOKEN MIRROR PASS — ${count(colors as unknown as Tree)} color values + ` +
-  `${count(motion.duration)} durations + ${count(motion.easing)} easings match /tailwind.config.js`,
+  `TOKEN WIRING PASS — ${count(colors as unknown as Tree)} color values + ` +
+    `${count(motion.duration)} durations + ${count(motion.easing)} easings are wired into Tailwind`,
 );
