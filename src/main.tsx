@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.tsx'
 import { alignHeroDotTarget } from './dot/state.ts'
 import { legalPageFromPath } from './legal/routes.ts'
+import { sharedRouteFromPath } from './shared/routes.ts'
 
 // Before React: pin the CSS drop target to the MEASURED mark position (the
 // shell hero is already in the DOM), so the falling dot lands exactly where
@@ -11,6 +12,8 @@ import { legalPageFromPath } from './legal/routes.ts'
 // late layout (fonts) moved anything.
 if (legalPageFromPath(window.location.pathname)) {
   document.documentElement.classList.add('legal-page')
+} else if (sharedRouteFromPath(window.location.pathname)) {
+  document.documentElement.classList.add('shared-page')
 } else {
   alignHeroDotTarget()
   window.addEventListener('load', alignHeroDotTarget)
