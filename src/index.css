@@ -55,6 +55,11 @@
   animation: none;
 }
 
+html.legal-page #dot,
+html.legal-page #root > main:not([data-legal]) {
+  display: none;
+}
+
 @keyframes dot-drop {
   0% {
     transform: translate(var(--dot-hero-tx), calc(-6vh - var(--dot-size))) scale(1, 1);
