@@ -7,6 +7,8 @@ RUN npm install --global npm@11.16.0
 RUN npm ci
 
 COPY . .
+ARG VITE_API_URL=https://api.mishi.app
+ENV VITE_API_URL=$VITE_API_URL
 RUN npm run build
 
 FROM caddy:2.10-alpine

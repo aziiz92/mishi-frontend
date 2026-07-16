@@ -6,6 +6,9 @@
 :8080 {
   encode zstd gzip
 
+  @shared path /s /s/*
+  header @shared X-Robots-Tag "noindex, nofollow, noarchive"
+
   handle /healthz {
     respond "ok" 200
   }
@@ -18,7 +21,7 @@
       -Server
       X-Content-Type-Options "nosniff"
       X-Frame-Options "DENY"
-      Referrer-Policy "strict-origin-when-cross-origin"
+      Referrer-Policy "strict-origin"
     }
 
     file_server
