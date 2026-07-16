@@ -9,6 +9,8 @@ import { frameSrc } from './scene/sequence';
 import { createScrollSpine, type ScrollSpine } from './scroll/master';
 import { LegalPage } from './legal/LegalPage';
 import { legalPageFromPath } from './legal/routes';
+import { SharedMenuPage } from './shared/SharedMenuPage';
+import { sharedRouteFromPath } from './shared/routes';
 
 // Tier A only, fetched after first paint — the hero never waits on WebGL.
 const Stage = lazy(() => import('./three/Stage'));
@@ -357,7 +359,12 @@ function MarketingApp() {
 
 function App() {
   const legalPage = legalPageFromPath(window.location.pathname);
-  return legalPage ? <LegalPage page={legalPage} /> : <MarketingApp />;
+  if (legalPage) return <LegalPage page={legalPage} />;
+
+  const sharedRoute = sharedRouteFromPath(window.location.pathname);
+  if (sharedRoute) return <SharedMenuPage token={sharedRoute.token} />;
+
+  return <MarketingApp />;
 }
 
 export default App;

@@ -34,6 +34,26 @@ For this application:
 - do not add Caddy TLS configuration;
 - enable Dokploy Auto Deploy for `main`.
 
+The Docker build accepts `VITE_API_URL` and defaults to
+`https://api.mishi.app`. It is a public browser endpoint, never a secret.
+
+## Shared menus
+
+The public join view is served by this application at `/s/{share_token}`. The
+token is a bearer link: Caddy prevents indexing and sends only the site origin
+as the referrer.
+
+Once this version is live, configure the backend application with:
+
+```dotenv
+PUBLIC_BASE_URL=https://api.mishi.app
+PUBLIC_WEB_URL=https://mishi.app
+CORS_ALLOW_ORIGINS=https://mishi.app
+```
+
+`PUBLIC_BASE_URL` continues to name the API and its media proxy. Only
+`PUBLIC_WEB_URL` composes links shown by the mobile Share sheet.
+
 DNS, domains, certificates and public ports `80/443` remain managed by
 Cloudflare and Dokploy/Traefik.
 

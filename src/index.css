@@ -56,8 +56,16 @@
 }
 
 html.legal-page #dot,
-html.legal-page #root > main:not([data-legal]) {
+html.legal-page #root > main:not([data-legal]),
+html.shared-page #dot,
+html.shared-page #root > main:not([data-shared]) {
   display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.shared-page .animate-pulse {
+    animation: none;
+  }
 }
 
 @keyframes dot-drop {
