@@ -7,6 +7,8 @@ import { detectTier, type Tier } from './lib/tier';
 import { SequencePlayer } from './scene/SequencePlayer';
 import { frameSrc } from './scene/sequence';
 import { createScrollSpine, type ScrollSpine } from './scroll/master';
+import { LegalPage } from './legal/LegalPage';
+import { legalPageFromPath } from './legal/routes';
 
 // Tier A only, fetched after first paint — the hero never waits on WebGL.
 const Stage = lazy(() => import('./three/Stage'));
@@ -20,7 +22,7 @@ const sweep = import.meta.env.DEV && params.get('sweep') === '1';
 const jumpTo = import.meta.env.DEV ? Number(params.get('p') ?? NaN) : NaN;
 const bare = import.meta.env.DEV && params.get('bare') === '1';
 
-function App() {
+function MarketingApp() {
   const mainRef = useRef<HTMLElement>(null);
   const spineRef = useRef<ScrollSpine | null>(null);
   const [tier, setTier] = useState<Tier | null>(null);
@@ -351,6 +353,11 @@ function App() {
       )}
     </main>
   );
+}
+
+function App() {
+  const legalPage = legalPageFromPath(window.location.pathname);
+  return legalPage ? <LegalPage page={legalPage} /> : <MarketingApp />;
 }
 
 export default App;
