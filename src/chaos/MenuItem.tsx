@@ -1,23 +1,24 @@
 import type { MenuItemData } from './data';
 
-// One dish line — live HTML text, price in tabular figures (DL9), dotted
-// leader like the paper menus the panel imitates. The description (only
-// the dot's three hesitation targets have one) starts hidden and reveals
-// on the master timeline when the dot approaches — more information,
-// never clarity. Space is reserved in layout so reveals never reflow.
-export function MenuItem({ item, isStatic, dim }: { item: MenuItemData; isStatic: boolean; dim: boolean }) {
+// One live dish row, positioned over the illustrated paper at its `top`
+// fraction (DL61). Price in tabular figures (DL9), dotted leader like the
+// painted lines around it; a faint porcelain band keeps the type readable
+// over the artwork's abstract strokes. The description (only the dot's
+// three hesitation targets have one) starts hidden and reveals on the
+// master timeline when the dot approaches — more information, never
+// clarity. Space is absolute so reveals never reflow the paper.
+export function MenuItem({ item, isStatic }: { item: MenuItemData; isStatic: boolean }) {
   return (
-    <li className="py-1.5">
-      <div className="flex items-baseline gap-3">
-        <span className="whitespace-nowrap font-sans text-sm text-content-primary">{item.name}</span>
+    <li className="absolute inset-x-0" style={{ top: `${item.top * 100}%` }}>
+      <div className="flex items-baseline gap-2 rounded-sm bg-surface-raised/80 px-1.5 py-0.5">
+        <span className="whitespace-nowrap font-sans text-[13px] leading-snug text-content-primary">{item.name}</span>
         <span className="flex-1 border-b border-dotted border-border" aria-hidden="true" />
-        <span className="font-sans text-sm tabular-nums text-content-secondary">{item.price}</span>
+        <span className="font-sans text-[13px] leading-snug tabular-nums text-content-secondary">{item.price}</span>
       </div>
       {item.description && (
         <p
-          // dim panels are depth-duplicates: their descriptions never reveal
-          {...(dim ? {} : { 'data-chaos-reveal': item.id })}
-          className={`mt-1 max-w-[36ch] font-sans text-xs leading-relaxed text-content-secondary ${isStatic ? '' : 'opacity-0'}`}
+          data-chaos-reveal={item.id}
+          className={`mt-0.5 rounded-sm bg-surface-raised/80 px-1.5 py-0.5 font-sans text-[11px] leading-relaxed text-content-secondary ${isStatic ? '' : 'opacity-0'}`}
         >
           {item.description}
         </p>

@@ -30,7 +30,7 @@ const QUANTIZE = { quantizePosition: 14, quantizeNormal: 10, quantizeTexcoord: 1
 // DL38). WebP-in-GLB decodes universally and is 8× smaller here. The KTX2
 // stage below stays wired for assets where it proves out.
 const ASSETS: { in: string; out: string; baseColorTexture?: string; textureCodec?: 'webp' | 'ktx2' }[] = [
-  { in: 'assets-src/iphone_16_-_free.glb', out: 'public/3D/phone.draco.glb' },
+  // phone: iphone_17_pro_max.glb ships as-is in public/3D/ (not piped here)
   // DL4 (Aziiz): plate_texture.png wired as the plate's base color.
   { in: 'assets-src/plate/scene.gltf', out: 'public/3D/plate.draco.glb', baseColorTexture: 'assets-src/plate_texture.png', textureCodec: 'webp' },
 ];

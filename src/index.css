@@ -8,8 +8,11 @@
   :root {
     /* Hero geometry — single source for layout AND the dot's pre-JS CSS
        positions. Mark: logo-master m at 96px (h-24); its dot center sits
-       at 87.4% of mark height (632-368)/302, dia 24px (76/302 × 96). */
-    --hero-top: 22vh;
+       at 87.4% of mark height (632-368)/302, dia 24px (76/302 × 96).
+       Clamped low enough that mark + headline + sub + CTA cluster (DL67)
+       all fit the initial viewport — the CTAs must never hide below the
+       fold (found live, 2026-07-17). */
+    --hero-top: clamp(3.5rem, 11vh, 8rem);
     --dot-size: 24px;
   }
   html {
@@ -27,10 +30,11 @@
    The dot (#dot lives in index.html, outside #root). The hero drop is pure
    CSS — it must play before any 3D asset (or even React) loads. Easing per
    segment references the Results-Screen family by name (tokens.ts /
-   mishi-mobile motion.ts). After the drop+pulse, src/dot/render.ts takes
-   over via .dot-js. */
+   mishi-mobile motion.ts). Since the 2026-07-18 showcase redesign the dot
+   has no scroll journey: it settles in the hero mark and scrolls away with
+   Act 0 (position absolute, viewport-based coordinates hold at scroll 0). */
 #dot {
-  position: fixed;
+  position: absolute;
   left: 0;
   top: 0;
   width: var(--dot-size);
