@@ -1,21 +1,28 @@
 import { ChaosCopy } from './ChaosCopy';
-import { CHAOS_PANELS } from './data';
+import { ACT1_VISUALS, CHAOS_PANELS, type PanelId } from './data';
 import { DotTarget } from './DotTarget';
 import { MenuPanel } from './MenuPanel';
+import { type Lang } from '../content/copy';
+import { landingAssets } from '../landing.assets';
 import type { Tier } from '../lib/tier';
 
-// Act 1 — Le Chaos: the menu labyrinth. The hero's menu lifts off the
-// table, unfolds into connected paper panels that become the room, closes
-// in, and collapses into the scan frame Act 2's phone answers (DL57).
-// This component only builds the DOM; every tween lives on the master
-// timeline (src/chaos/timeline.ts) — per-section one-offs stay banned.
+// Act 1 — Le Chaos: the menu labyrinth, built from the ILLUSTRATED menu
+// (DL61, superseding DL57's CSS-drawn cards). The menu inside the hero
+// illustration becomes the isolated three-fold overlay, which becomes the
+// five separated paper panels, which unfold into the room, close in, and
+// collapse through the flat five-panel strip into the scan frame Act 2's
+// phone answers. This component only builds the DOM; every tween lives on
+// the master timeline (src/chaos/timeline.ts) — per-section one-offs stay
+// banned.
 //
-// Tier A mounts two extra depth panels (the §3 fidelity difference, not a
-// style fork); the static tier renders the composed still (DL52) with its
-// own dot mark.
-export function MenuChaosSection({ tier }: { tier: Tier | null }) {
+// Tier A mounts all five papers; Tier B mounts three (§3 / brief: max
+// three active panels — a fidelity difference, not a style fork); the
+// static tier renders the composed still (DL52) with its own dot mark.
+const TIER_B_PANELS: PanelId[] = ['left', 'center', 'right'];
+
+export function MenuChaosSection({ tier, lang }: { tier: Tier | null; lang: Lang }) {
   const isStatic = tier === 'static';
-  const [entrees, plats, grillades] = CHAOS_PANELS;
+  const panels = tier === 'tierA' ? CHAOS_PANELS : CHAOS_PANELS.filter((p) => TIER_B_PANELS.includes(p.id));
 
   return (
     // No vertical clipping: the menu deliberately crosses act boundaries —
@@ -24,25 +31,48 @@ export function MenuChaosSection({ tier }: { tier: Tier | null }) {
     // page scroll.
     <section id="act-1" aria-label="Le Chaos" data-act="1" className="relative z-10 min-h-screen overflow-x-clip">
       <div data-chaos-stage className="absolute inset-0 [perspective:1200px] [perspective-origin:50%_45%]">
+        {/* the isolated three-fold menu — starts glued over the menu drawn
+            in the hero illustration (heroMenu.ts cover math), lifts to
+            center, hands off to the separated panels */}
+        {ACT1_VISUALS && !isStatic && (
+          <img
+            data-chaos-overlay
+            src={landingAssets.heroMenuIsolated}
+            width={577}
+            height={433}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            className="absolute left-0 top-0 select-none opacity-0 [will-change:transform]"
+          />
+        )}
+
         <div className="absolute inset-0 [transform-style:preserve-3d]">
-          {tier === 'tierA' && (
-            <>
-              <MenuPanel panel={plats} pos="back-left" isStatic={isStatic} dim />
-              <MenuPanel panel={entrees} pos="back-right" isStatic={isStatic} dim />
-            </>
-          )}
-          <MenuPanel panel={entrees} pos="left" isStatic={isStatic} />
-          <MenuPanel panel={grillades} pos="right" isStatic={isStatic} />
-          <MenuPanel panel={plats} pos="center" isStatic={isStatic} />
+          {ACT1_VISUALS && panels.map((panel) => <MenuPanel key={panel.id} panel={panel} isStatic={isStatic} />)}
         </div>
 
         {/* pressure scrim — darkens the panels (never the copy) as the room
             closes in, relaying into Act 2's espresso field */}
         <div data-chaos-scrim aria-hidden="true" className="pointer-events-none absolute inset-0 bg-surface-inverse opacity-0" />
 
+        {/* the flat five-panel strip the room straightens back into before
+            it shrinks into the viewfinder */}
+        {ACT1_VISUALS && !isStatic && (
+          <img
+            data-chaos-flat
+            src={landingAssets.menuFlat}
+            width={1870}
+            height={671}
+            alt=""
+            aria-hidden="true"
+            draggable={false}
+            className="absolute left-1/2 top-1/2 w-[min(84vw,66rem)] select-none opacity-0 [will-change:transform]"
+          />
+        )}
+
         {/* the scan frame the labyrinth collapses into — sized exactly to
             Act 2's phone-screen anchor (204×440), viewfinder corners */}
-        {!isStatic && (
+        {ACT1_VISUALS && !isStatic && (
           <div
             data-chaos-frame
             aria-hidden="true"
@@ -55,7 +85,7 @@ export function MenuChaosSection({ tier }: { tier: Tier | null }) {
           </div>
         )}
 
-        <ChaosCopy isStatic={isStatic} />
+        <ChaosCopy isStatic={isStatic} lang={lang} />
       </div>
 
       {/* hesitation anchors for dot/path.ts — placement notes in DotTarget */}

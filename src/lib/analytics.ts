@@ -20,12 +20,13 @@ export const ACT_NAMES = [
   'la_decision',
 ] as const;
 
-export type CtaId = 'download_ios' | 'download_android' | 'view_demo';
+export type CtaId = 'download_ios' | 'download_android' | 'view_demo' | 'nav_download' | 'hero_download' | 'hero_contact';
 
 export type LandingEvent =
   | { event_name: 'landing_tier_served'; tier: Tier }
   | { event_name: 'landing_act_viewed'; act: number; act_name: (typeof ACT_NAMES)[number] }
-  | { event_name: 'landing_cta_tapped'; cta: CtaId };
+  | { event_name: 'landing_cta_tapped'; cta: CtaId }
+  | { event_name: 'landing_language_switched'; lang: 'fr' | 'en' };
 
 const DEVICE_ID_KEY = 'mishi_device_id';
 // Per-session fallback: a localStorage failure must never wedge tracking

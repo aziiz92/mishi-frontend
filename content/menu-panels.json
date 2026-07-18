@@ -1,52 +1,48 @@
 {
-  "comment": "Act 1 menu labyrinth — dish names verbatim from menu-lines.json (A7 ground truth), grouped into the unfolded menu's panels. 14 dishes total: the held line's count. Prices are deliberately generic and currency-free (DL59) — Act 1 sells the universal problem; the FCFA reality lives in Acts 3–4. Descriptions exist only on the dot's three hesitation targets (DL60): more information, never clarity.",
+  "comment": "Act 1 menu labyrinth — live typography OVER the illustrated panel assets (DL61 rebuild; supersedes the 14-row DOM menu of DL57). The painted panels supply the density; the DOM adds 8 meaningful dishes (brief: 6–10), names verbatim from menu-lines.json (A7 ground truth: international-heavy + Senegalese classics). Prices generic and currency-free (DL59). Descriptions exist only on the dot's three hesitation targets (DL60). `top` = fraction of the panel's height where the live row sits.",
   "panels": [
+    { "id": "far-left", "items": [] },
     {
-      "id": "entrees",
-      "category": "Entrées",
+      "id": "left",
       "items": [
-        { "id": "pastels", "name": "Pastels (×4)", "price": "12" },
-        { "id": "fataya-viande", "name": "Fataya à la viande (×3)", "price": "14" },
         {
           "id": "nems-poulet",
           "name": "Nems au poulet (×6)",
           "price": "16",
+          "top": 0.2,
           "description": "Croustillants, sauce aigre-douce maison, coriandre fraîche. Par six."
         },
-        { "id": "salade-fraicheur", "name": "Salade fraîcheur", "price": "18" }
+        { "id": "salade-cesar", "name": "Salade César", "price": "18", "top": 0.52 }
       ]
     },
     {
-      "id": "plats",
-      "category": "Plats",
+      "id": "center",
       "items": [
-        { "id": "thieboudienne-rouge", "name": "Thiéboudienne rouge", "price": "24" },
         {
           "id": "poulet-yassa",
           "name": "Poulet Yassa",
           "price": "21",
+          "top": 0.15,
           "description": "Oignons confits au citron, olives, riz brisé. Accompagnement au choix, selon arrivage."
         },
-        { "id": "mafe-boeuf", "name": "Mafé de bœuf", "price": "19" },
-        { "id": "soupe-kandia", "name": "Soupe kandia", "price": "22" },
-        { "id": "domoda", "name": "Domoda", "price": "18" },
-        { "id": "attieke-poisson", "name": "Attiéké poisson", "price": "26" }
+        { "id": "thieboudienne-rouge", "name": "Thiéboudienne rouge", "price": "24", "top": 0.38 },
+        { "id": "spaghetti-carbonara", "name": "Spaghetti carbonara", "price": "24", "top": 0.59 },
+        { "id": "mezze-libanais", "name": "Mezzé libanais", "price": "26", "top": 0.8 }
       ]
     },
     {
-      "id": "grillades",
-      "category": "Grillades",
+      "id": "right",
       "items": [
         {
           "id": "dibi-mouton",
           "name": "Dibi mouton",
           "price": "32",
+          "top": 0.24,
           "description": "Grillé au feu de bois, oignons, moutarde. Portion selon le marché du jour."
         },
-        { "id": "poulet-braise", "name": "Poulet braisé", "price": "27" },
-        { "id": "poisson-braise", "name": "Poisson braisé", "price": "29" },
-        { "id": "brochettes-boeuf", "name": "Brochettes de bœuf", "price": "31" }
+        { "id": "poisson-braise", "name": "Poisson braisé", "price": "29", "top": 0.56 }
       ]
-    }
+    },
+    { "id": "far-right", "items": [] }
   ]
 }

@@ -1,32 +1,29 @@
-// The scroll spine — concept doc §5. ONE master GSAP timeline scrubbed by
-// scroll, with six labeled act boundaries. Every motion on the page
-// attaches to this timeline at these labels; per-section one-off tweens
-// are how continuity dies, and are banned.
+// The scroll spine — ONE master GSAP timeline scrubbed by scroll.
+// Every motion on the page attaches to this timeline; per-section one-off
+// tweens are how continuity dies, and are banned.
+//
+// Since the 2026-07-18 redesign the spine drives exactly one performer:
+// the floating 3D phone of the feature showcase (src/showcase/), plus the
+// showcase copy reveals. The old dot journey / chaos / scene choreography
+// is disconnected (modules parked in src/dot, src/chaos, src/scene).
 
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
 
-import { compileChaosTimeline } from '../chaos/timeline';
-import { compileDotPath } from '../dot/path';
-import { startDotRenderer } from '../dot/render';
-import type { Tier } from '../lib/tier';
-import { compileSceneTimeline } from '../scene/scene';
-import { colors } from '../theme/tokens';
-
-export const ACT_LABELS = ['act0', 'act1', 'act2', 'act3', 'act4', 'act5'] as const;
+import { compileShowcase } from '../showcase/timeline';
 
 export interface ScrollSpine {
   lenis: Lenis;
   timeline: gsap.core.Timeline;
-  currentDotOwner: () => 'dom' | 'gl';
   destroy: () => void;
 }
 
-export function createScrollSpine(container: HTMLElement, tier: Tier, dotEl: HTMLElement): ScrollSpine {
+export function createScrollSpine(container: HTMLElement): ScrollSpine {
   gsap.registerPlugin(ScrollTrigger);
 
-  const lenis = new Lenis();
+  // long, gentle glide — the showcase is watched, not skimmed
+  const lenis = new Lenis({ duration: 1.6 });
   lenis.on('scroll', ScrollTrigger.update);
   const tick = (time: number) => lenis.raf(time * 1000);
   gsap.ticker.add(tick);
@@ -37,49 +34,30 @@ export function createScrollSpine(container: HTMLElement, tier: Tier, dotEl: HTM
       trigger: container,
       start: 'top top',
       end: 'bottom bottom',
-      scrub: true,
+      // numeric scrub: the timeline eases toward the scroll position over
+      // ~1.2s instead of tracking the wheel 1:1 — the transit reads as
+      // motion even on a fast flick
+      scrub: 1.2,
     },
   });
 
-  // Duration anchor: total duration exactly 1 so labels and dot keyframes
-  // live at absolute progress values.
+  // Duration anchor: total duration exactly 1 so every position on the
+  // timeline is an absolute scroll-progress value.
   timeline.to({}, { duration: 1 }, 0);
 
-  // Acts are equal-height sections, so boundaries are even sixths.
-  ACT_LABELS.forEach((label, i) => {
-    timeline.addLabel(label, i / ACT_LABELS.length);
-  });
-
-  // The dot's journey — the single motion path, compiled onto this
-  // timeline (src/dot/path.ts), rendered by the single writer.
-  compileDotPath(timeline);
-  const dotRenderer = startDotRenderer(timeline, tier, dotEl);
-
-  // Acts 2–3 scene choreography (field, phone, plate, bloom, result card)
-  // — same timeline, both tiers (Tier B reads sceneState via the frames'
-  // capture source and the DOM tweens run everywhere).
-  compileSceneTimeline(timeline, {
-    page: container,
-    act2Copy: document.getElementById('act2-copy'),
-    resultCard: document.getElementById('result-card'),
-    espresso: colors.surface.inverse,
-    cream: colors.surface.canvas,
-  });
-  compileChaosTimeline(timeline, {
-    stage: container.querySelector<HTMLElement>('[data-chaos-stage]'),
-    panels: [...container.querySelectorAll<HTMLElement>('[data-chaos-panel]')],
-    reveals: [...container.querySelectorAll<HTMLElement>('[data-chaos-reveal]')],
-    copyLines: [...container.querySelectorAll<HTMLElement>('[data-chaos-copy-line]')],
-    scrim: container.querySelector<HTMLElement>('[data-chaos-scrim]'),
-    frame: container.querySelector<HTMLElement>('[data-chaos-frame]'),
+  compileShowcase(timeline, {
+    container,
+    sections: [...container.querySelectorAll<HTMLElement>('[data-showcase]')],
+    copies: [...container.querySelectorAll<HTMLElement>('[data-showcase]')].map((s) =>
+      s.querySelector<HTMLElement>('[data-showcase-copy]'),
+    ),
+    outro: container.querySelector<HTMLElement>('[data-showcase-outro]'),
   });
 
   return {
     lenis,
     timeline,
-    currentDotOwner: dotRenderer.currentOwner,
     destroy: () => {
-      dotRenderer.destroy();
       timeline.scrollTrigger?.kill();
       timeline.kill();
       gsap.ticker.remove(tick);
