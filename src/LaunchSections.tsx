@@ -5,6 +5,7 @@ import { COPY } from './content/copy';
 import { landingConfig } from './landing.config';
 import { track } from './lib/analytics';
 import { AppStoreCta } from './components/AppStoreCta';
+import { CareExperience } from './components/CareExperience';
 import { MovingProductPhone } from './components/MovingProductPhone';
 import { TrustExperience } from './components/TrustExperience';
 
@@ -53,23 +54,7 @@ export function Trust({ lang }: { lang: Lang }) {
 }
 
 export function BuiltWithCare({ lang }: { lang: Lang }) {
-  const copy = COPY[lang].care;
-
-  return (
-    <section data-section="care" className="launch-section px-6 py-24 sm:px-8 sm:py-32">
-      <div className="mx-auto max-w-4xl">
-        <p className="section-eyebrow">{copy.eyebrow}</p>
-        <h2 className="mt-4 font-display-title text-5xl leading-[1.02] text-content-primary sm:text-6xl">{copy.title}</h2>
-        <p className="mt-6 max-w-2xl font-sans text-lg leading-8 text-content-secondary">{copy.body}</p>
-        <a
-          href="/about"
-          className="mt-8 inline-flex min-h-11 items-center border-b border-content-primary font-sans-semibold text-content-primary"
-        >
-          {copy.link}
-        </a>
-      </div>
-    </section>
-  );
+  return <CareExperience lang={lang} />;
 }
 
 export function Faq({ lang }: { lang: Lang }) {
