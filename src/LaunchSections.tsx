@@ -6,6 +6,7 @@ import { landingConfig } from './landing.config';
 import { track } from './lib/analytics';
 import { AppStoreCta } from './components/AppStoreCta';
 import { MovingProductPhone } from './components/MovingProductPhone';
+import { TrustExperience } from './components/TrustExperience';
 
 export function HowItWorks({ lang }: { lang: Lang }) {
   const copy = COPY[lang].how;
@@ -48,16 +49,7 @@ export function HowItWorks({ lang }: { lang: Lang }) {
 }
 
 export function Trust({ lang }: { lang: Lang }) {
-  const copy = COPY[lang].trust;
-
-  return (
-    <section id="trust" data-section="trust" className="launch-section bg-surface-inverse px-6 py-24 text-content-inverse sm:px-8 sm:py-32">
-      <div className="mx-auto max-w-6xl">
-        <h2 className="max-w-4xl font-display-title text-5xl leading-[1.02] sm:text-6xl">{copy.title}</h2>
-        <p className="mt-6 max-w-2xl font-sans text-lg leading-8 text-border">{copy.intro}</p>
-      </div>
-    </section>
-  );
+  return <TrustExperience lang={lang} />;
 }
 
 export function BuiltWithCare({ lang }: { lang: Lang }) {
