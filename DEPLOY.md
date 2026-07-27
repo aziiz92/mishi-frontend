@@ -34,8 +34,30 @@ For this application:
 - do not add Caddy TLS configuration;
 - enable Dokploy Auto Deploy for `main`.
 
-The Docker build accepts `VITE_API_URL` and defaults to
-`https://api.mishi.app`. It is a public browser endpoint, never a secret.
+The Docker build accepts these public browser variables:
+
+```dotenv
+VITE_API_URL=https://api.mishi.app
+VITE_ANALYTICS_URL=https://api.mishi.app
+VITE_APP_STORE_URL=https://apps.apple.com/...
+VITE_APP_STORE_BADGE_FR_URL=https://...
+VITE_CANONICAL_BASE_URL=https://mishi.app
+VITE_RELEASE_STRICT=1
+```
+
+`VITE_APP_STORE_URL` must be the final public App Store listing. Production
+must set `VITE_RELEASE_STRICT=1`; the build then fails if the listing is absent
+or is not an `https://apps.apple.com/` URL. Download the official French badge
+from Apple App Store Marketing Tools and expose that unmodified asset at
+`VITE_APP_STORE_BADGE_FR_URL`; strict mode also requires it. Local and
+pull-request builds use the clearly identifiable temporary App Store ID
+`id0000000000` so the final badge, CTA layout, attribution parameters, and QR
+can be reviewed before the listing exists. Strict release mode rejects that ID.
+
+Landing analytics are cookieless. The browser sends a random identifier that
+exists for the current page session only, together with locale, served tier,
+section views, App Store and QR clicks, FAQ opens, and restaurant enquiries.
+No analytics device identifier is written to local storage.
 
 ## Shared menus
 
