@@ -1,24 +1,40 @@
-// Language state — FR-first (D2), EN via the nav toggle (DL64). Persisted
-// choice survives reloads; storage failures never wedge anything (D39
-// lesson, same posture as analytics deviceId).
-
 import type { Lang } from '../content/copy';
 
 const KEY = 'mishi_lang';
 
+export function localeFromPath(pathname: string): Lang | null {
+  if (/^\/fr(?:\/|$)/.test(pathname)) return 'fr';
+  if (/^\/en(?:\/|$)/.test(pathname)) return 'en';
+  return null;
+}
+
 export function initialLang(): Lang {
+  const routeLang = localeFromPath(window.location.pathname);
+  if (routeLang) return routeLang;
+
   try {
-    return localStorage.getItem(KEY) === 'en' ? 'en' : 'fr';
+    const saved = localStorage.getItem(KEY);
+    if (saved === 'fr' || saved === 'en') return saved;
   } catch {
-    return 'fr';
+    // Browser locale remains a safe fallback.
+  }
+
+  return navigator.language.toLowerCase().startsWith('fr') ? 'fr' : 'en';
+}
+
+export function rememberLang(lang: Lang): void {
+  try {
+    localStorage.setItem(KEY, lang);
+  } catch {
+    // Persistence is helpful, never required.
   }
 }
 
 export function applyLang(lang: Lang): void {
   document.documentElement.lang = lang;
-  try {
-    localStorage.setItem(KEY, lang);
-  } catch {
-    // per-session only — fine
-  }
+  rememberLang(lang);
+}
+
+export function localizedHome(lang: Lang): string {
+  return `/${lang}/`;
 }

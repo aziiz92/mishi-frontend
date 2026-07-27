@@ -38,6 +38,13 @@ function Privacy() {
 
       <Section title="Mesures d’usage facultatives">
         <p>
+          Sur le site mishi.app, Mishi mesure sans cookie la langue, la version
+          d’expérience servie, les sections consultées et les clics vers l’App
+          Store, le QR code ou le contact restaurant. Un identifiant aléatoire
+          existe uniquement pendant la session en cours. Le site ne conserve
+          pas d’identifiant de suivi entre deux visites.
+        </p>
+        <p>
           Les mesures d’usage et de qualité sont désactivées par défaut. Si vous les activez
           depuis le Profil, Mishi peut recevoir les actions réalisées, la durée et le résultat
           des scans, les écrans consultés et les corrections. Vous pouvez retirer ce choix à
@@ -99,7 +106,7 @@ function Support() {
         <p>
           <a
             className="inline-flex min-h-11 items-center rounded-full bg-accent px-5 py-3 font-sans-semibold text-accent-on"
-            href="mailto:contact@mishi.app?subject=Mishi%20%E2%80%94%20demande%20d%E2%80%99aide">
+            href="mailto:contact@mishi.app?subject=Mishi%20-%20demande%20d%E2%80%99aide">
             Écrire à contact@mishi.app
           </a>
         </p>
@@ -190,7 +197,7 @@ export function LegalPage({ page }: { page: LegalPageKind }) {
           <h1 className="mt-3 font-display-title text-4xl leading-tight text-content-primary sm:text-5xl">
             {title}
           </h1>
-          <p className="mt-4 font-sans text-sm text-content-secondary">Mise à jour : 16 juillet 2026</p>
+          <p className="mt-4 font-sans text-sm text-content-secondary">Mise à jour : 27 juillet 2026</p>
         </header>
 
         {page === 'privacy' ? <Privacy /> : page === 'support' ? <Support /> : <Terms />}
