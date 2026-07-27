@@ -14,6 +14,8 @@ if (legalPageFromPath(window.location.pathname)) {
   document.documentElement.classList.add('legal-page')
 } else if (sharedRouteFromPath(window.location.pathname)) {
   document.documentElement.classList.add('shared-page')
+} else if (/^\/about(?:\/|$)/.test(window.location.pathname)) {
+  document.documentElement.classList.add('about-page')
 } else {
   alignHeroDotTarget()
   window.addEventListener('load', alignHeroDotTarget)
