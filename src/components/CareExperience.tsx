@@ -103,7 +103,6 @@ export function CareExperience({ lang }: { lang: Lang }) {
         </div>
 
         <div data-care-story className="care-story">
-          <p className="care-scene-note">{copy.sceneLabel}</p>
           <p className="care-story-body">{copy.body}</p>
           <a
             href="/about"

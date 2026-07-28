@@ -604,15 +604,6 @@
   will-change: transform, opacity;
 }
 
-.care-scene-note {
-  margin-bottom: 1.5rem;
-  font-family: 'InstrumentSans-Medium', 'InstrumentSans-Medium Fallback', Arial, sans-serif;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgb(255 249 239 / 72%);
-}
-
 .care-story-body {
   font-family: 'InstrumentSans-Regular', 'InstrumentSans-Regular Fallback', Arial, sans-serif;
   font-size: clamp(1.25rem, 2vw, 1.65rem);
@@ -754,10 +745,6 @@
     left: 1.25rem;
     bottom: max(1.75rem, env(safe-area-inset-bottom));
     width: calc(100% - 2.5rem);
-  }
-
-  .care-scene-note {
-    margin-bottom: 1rem;
   }
 
   .care-story-body {
