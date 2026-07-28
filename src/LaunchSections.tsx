@@ -6,47 +6,11 @@ import { landingConfig } from './landing.config';
 import { track } from './lib/analytics';
 import { AppStoreCta } from './components/AppStoreCta';
 import { CareExperience } from './components/CareExperience';
-import { MovingProductPhone } from './components/MovingProductPhone';
+import { HowSequence } from './components/HowSequence';
 import { TrustExperience } from './components/TrustExperience';
 
 export function HowItWorks({ lang }: { lang: Lang }) {
-  const copy = COPY[lang].how;
-
-  return (
-    <section id="how" data-section="how" className="launch-section overflow-hidden px-6 py-24 sm:px-8 sm:py-32">
-      <div className="mx-auto max-w-6xl">
-        <header className="max-w-3xl">
-          <p className="section-eyebrow">{copy.eyebrow}</p>
-          <h2 className="section-title mt-4">{copy.title}</h2>
-          <p className="section-intro mt-6">{copy.intro}</p>
-        </header>
-
-        <div className="mt-20 space-y-24 sm:mt-28 sm:space-y-32">
-          {copy.steps.map((step, index) => (
-            <article
-              key={step.number}
-              data-phone-step
-              className={`grid items-center gap-12 lg:grid-cols-2 lg:gap-20 ${index % 2 ? 'lg:[&>*:first-child]:order-2' : ''}`}
-            >
-              <div className="mx-auto w-full max-w-[390px] lg:max-w-[430px]">
-                <MovingProductPhone
-                  src={step.screen}
-                  alt={step.alt}
-                  eager={index === 0}
-                  direction={index % 2 === 0 ? 'left' : 'right'}
-                />
-              </div>
-              <div className="max-w-lg">
-                <p className="font-sans-medium text-sm tabular-nums text-content-secondary">{step.number} / 03</p>
-                <h3 className="mt-5 font-display-title text-4xl leading-[1.08] text-content-primary sm:text-5xl">{step.title}</h3>
-                <p className="mt-6 font-sans text-lg leading-8 text-content-secondary">{step.body}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      </div>
-    </section>
-  );
+  return <HowSequence lang={lang} />;
 }
 
 export function Trust({ lang }: { lang: Lang }) {
