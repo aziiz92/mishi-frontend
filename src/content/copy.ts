@@ -55,7 +55,6 @@ export interface LandingCopy {
     title: string;
     body: string;
     link: string;
-    sceneLabel: string;
   };
   faq: {
     eyebrow: string;
@@ -169,7 +168,6 @@ export const COPY: Record<Lang, LandingCopy> = {
       title: 'Chaque menu mérite d’être compris.',
       body: 'Mishi aide chacun à comprendre un menu inconnu, en français ou en anglais, où qu’il soit.',
       link: 'Découvrir l’histoire de Mishi',
-      sceneLabel: 'Scène illustrative',
     },
     faq: {
       eyebrow: 'Avant de scanner',
@@ -310,7 +308,6 @@ export const COPY: Record<Lang, LandingCopy> = {
       title: 'Every menu deserves to be understood.',
       body: 'Mishi helps anyone understand an unfamiliar menu, in French or English, wherever they are.',
       link: 'Read the Mishi story',
-      sceneLabel: 'Illustrative scene',
     },
     faq: {
       eyebrow: 'Before you scan',

@@ -127,6 +127,258 @@
   transform: rotate(-4deg);
 }
 
+/* How it works — pinned cinematic sequence */
+.how-seq {
+  position: relative;
+  height: 340dvh;
+  background: rgb(255 249 239);
+}
+
+.how-seq-static {
+  display: none;
+}
+
+.how-seq-stage {
+  position: sticky;
+  top: 0;
+  height: 100dvh;
+  min-height: 40rem;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.how-seq-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+  align-items: center;
+  gap: clamp(2rem, 5vw, 5.5rem);
+  height: 100%;
+  max-width: 78rem;
+  margin-inline: auto;
+  padding-inline: clamp(3rem, 8vw, 7rem);
+}
+
+.how-rail {
+  position: absolute;
+  top: 50%;
+  left: clamp(1.1rem, 3.4vw, 3.2rem);
+  height: min(44dvh, 24rem);
+  width: 2px;
+  background: rgb(90 70 56 / 16%);
+  transform: translateY(-50%);
+}
+
+.how-rail-fill {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 100%;
+  background: rgb(233 162 59);
+  transform: scaleY(0);
+  transform-origin: top center;
+  will-change: transform;
+}
+
+.how-phone-col {
+  display: grid;
+  place-items: center;
+}
+
+.how-phone {
+  position: relative;
+  height: min(66dvh, 34rem);
+  aspect-ratio: 201 / 437;
+  transform: perspective(1200px);
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+.how-phone .product-phone {
+  transform: none;
+  width: 100%;
+  height: 100%;
+  /* Radius/bezel as a share of width so the iPhone silhouette holds at any
+     size (matches the original ~12.8%-of-width proportion). */
+  padding: 2%;
+  border-radius: 12.8% / 5.9%;
+}
+
+.how-phone .product-phone-screen {
+  border-radius: 11% / 5.05%;
+}
+
+.how-phone-glow {
+  position: absolute;
+  inset: 8% 4% 12%;
+  z-index: 0;
+  border-radius: 44%;
+  background: rgb(233 162 59 / 22%);
+  filter: blur(2.75rem);
+}
+
+.how-phone-screen {
+  position: relative;
+}
+
+.how-screen-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  backface-visibility: hidden;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.how-screen-layer:first-child {
+  opacity: 1;
+}
+
+.how-copy {
+  position: relative;
+  max-width: 34rem;
+}
+
+.how-seq-title {
+  margin-top: 0.9rem;
+  max-width: 16ch;
+  font-family: 'Fraunces-DisplayTitle', 'Fraunces-DisplayTitle Fallback', Georgia, serif;
+  font-size: clamp(1.5rem, 2vw, 1.9rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: rgb(90 70 56);
+  text-wrap: balance;
+}
+
+.how-scenes {
+  position: relative;
+  margin-top: clamp(2rem, 5vh, 3.25rem);
+  min-height: clamp(17rem, 34vh, 22rem);
+}
+
+.how-scene {
+  position: absolute;
+  inset: 0;
+  visibility: hidden;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.how-scene:first-child {
+  visibility: visible;
+  opacity: 1;
+}
+
+.how-scene-title {
+  margin-top: 1.1rem;
+  font-family: 'Fraunces-DisplayTitle', 'Fraunces-DisplayTitle Fallback', Georgia, serif;
+  font-size: clamp(2.75rem, 5vw, 4.5rem);
+  line-height: 0.98;
+  letter-spacing: -0.03em;
+  color: rgb(28 23 20);
+  text-wrap: balance;
+}
+
+.how-scene-body {
+  margin-top: 1.4rem;
+  max-width: 30rem;
+  font-family: 'InstrumentSans-Regular', 'InstrumentSans-Regular Fallback', Arial, sans-serif;
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  line-height: 1.6;
+  color: rgb(90 70 56);
+  text-wrap: pretty;
+}
+
+.how-progress {
+  margin-top: clamp(2rem, 5vh, 3.25rem);
+}
+
+.how-ticks {
+  display: flex;
+  gap: clamp(1.75rem, 4vw, 3rem);
+  font-family: 'InstrumentSans-Medium', 'InstrumentSans-Medium Fallback', Arial, sans-serif;
+  font-size: 0.85rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
+  color: rgb(28 23 20);
+}
+
+.how-tick {
+  will-change: opacity;
+}
+
+@media (max-width: 767px) {
+  .how-seq {
+    height: 320dvh;
+  }
+
+  .how-seq-grid {
+    grid-template-columns: 1fr;
+    align-content: center;
+    gap: clamp(1.5rem, 6vh, 3rem);
+    padding-inline: clamp(1.5rem, 6vw, 2.5rem);
+  }
+
+  .how-rail {
+    top: auto;
+    bottom: clamp(1.5rem, 5vh, 2.5rem);
+    left: 50%;
+    height: 2px;
+    width: min(70vw, 18rem);
+    transform: translateX(-50%);
+  }
+
+  .how-rail-fill {
+    inset: 0 auto 0 0;
+    width: 100%;
+    height: 100%;
+    transform: scaleX(0);
+    transform-origin: left center;
+  }
+
+  .how-phone {
+    height: min(40dvh, 22rem);
+  }
+
+  .how-copy {
+    max-width: none;
+    text-align: center;
+    margin-inline: auto;
+  }
+
+  .how-seq-title {
+    margin-inline: auto;
+  }
+
+  .how-scenes {
+    min-height: clamp(14rem, 40vh, 20rem);
+  }
+
+  .how-scene-body {
+    margin-inline: auto;
+  }
+
+  .how-ticks {
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .how-seq {
+    height: auto;
+  }
+
+  .how-seq-stage {
+    display: none;
+  }
+
+  .how-seq-static {
+    display: block;
+  }
+}
+
 .trust-heading {
   text-wrap: balance;
 }
@@ -352,15 +604,6 @@
   will-change: transform, opacity;
 }
 
-.care-scene-note {
-  margin-bottom: 1.5rem;
-  font-family: 'InstrumentSans-Medium', 'InstrumentSans-Medium Fallback', Arial, sans-serif;
-  font-size: 0.75rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: rgb(255 249 239 / 72%);
-}
-
 .care-story-body {
   font-family: 'InstrumentSans-Regular', 'InstrumentSans-Regular Fallback', Arial, sans-serif;
   font-size: clamp(1.25rem, 2vw, 1.65rem);
@@ -502,10 +745,6 @@
     left: 1.25rem;
     bottom: max(1.75rem, env(safe-area-inset-bottom));
     width: calc(100% - 2.5rem);
-  }
-
-  .care-scene-note {
-    margin-bottom: 1rem;
   }
 
   .care-story-body {
