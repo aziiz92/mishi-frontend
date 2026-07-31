@@ -7,13 +7,13 @@ const combined = Object.values(sources).join('\n');
 const required = [
   ['Tu regardes le menu. Le menu te regarde.', 'French hero'],
   ['You read the menu. The menu reads you.', 'English hero'],
-  ['Une photo. Une recommandation. Moins de 60 secondes.', 'French promise'],
-  ['One photo. One recommendation. Under 60 seconds.', 'English promise'],
+  ['Jusqu’à trois pages. Tout le menu expliqué.', 'French multi-page promise'],
+  ['Up to three pages. Every dish explained.', 'English multi-page promise'],
   ['Chaque menu mérite d’être compris.', 'French global positioning'],
   ['Every menu deserves to be understood.', 'English global positioning'],
   ['contact@mishi.app', 'restaurant contact'],
-  ['Pour les allergies, vérifie toujours', 'French allergy limitation'],
-  ['For allergies, always verify', 'English allergy limitation'],
+  ['Ne te fie jamais uniquement à Mishi pour une allergie', 'French allergy limitation'],
+  ['Never rely on Mishi alone for an allergy', 'English allergy limitation'],
 ];
 
 const failures = [];

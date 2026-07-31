@@ -43,9 +43,9 @@ export interface LandingCopy {
     preferenceTitle: string;
     preferenceBody: string;
     preferenceAlt: string;
-    allergyTitle: string;
-    allergyBody: string;
-    allergyAlt: string;
+    collectionTitle: string;
+    collectionBody: string;
+    collectionAlt: string;
     privacyTitle: string;
     privacyBody: string;
     privacyAlt: string;
@@ -96,9 +96,9 @@ export interface LandingCopy {
 export const COPY: Record<Lang, LandingCopy> = {
   fr: {
     features: [
-      { title: 'Scanne le menu.', body: 'Une photo suffit.' },
+      { title: 'Scanne jusqu’à trois pages.', body: 'Un seul menu, même quand il continue.' },
       { title: 'Comprends chaque plat.', body: 'Des explications claires.' },
-      { title: 'Reçois une recommandation.', body: 'Un choix adapté à tes préférences.' },
+      { title: 'Garde tes envies.', body: 'Retrouve les plats et les lieux à essayer.' },
     ],
     chaosLines: ['14 plats.', 'Aucune photo.', 'Le serveur attend.'],
     skip: 'Aller au contenu',
@@ -113,20 +113,20 @@ export const COPY: Record<Lang, LandingCopy> = {
     hero: {
       eyebrow: 'Ton guide de menu sur iPhone',
       title: 'Tu regardes le menu. Le menu te regarde.',
-      sub: 'Une photo. Une recommandation. Moins de 60 secondes.',
+      sub: 'Jusqu’à trois pages. Tout le menu expliqué. Un choix qui te ressemble.',
       demo: 'Voir la démo',
       storeAria: 'Télécharger Mishi sur l’App Store',
       unavailable: 'Recevoir les nouvelles du lancement',
     },
     how: {
       eyebrow: 'Un menu flou devient un choix clair',
-      title: 'Trois étapes. Un plat qui te ressemble.',
-      intro: 'Mishi transforme une photo de menu en explications utiles, puis te propose un seul choix.',
+      title: 'Le menu entier. Un choix clair.',
+      intro: 'Mishi rassemble les pages, explique les plats et garde ceux que tu veux essayer.',
       steps: [
         {
           number: '01',
-          title: 'Scanne le menu.',
-          body: 'Cadre la carte ou choisis une photo. Mishi lit aussi les menus sans images et tente les écritures manuscrites.',
+          title: 'Capture toutes les pages.',
+          body: 'Cadre le menu ou choisis jusqu’à trois photos. Mishi les lit ensemble, dans le bon ordre.',
           screen: '/screens/scan-fr.webp',
           alt: 'Écran de capture Mishi cadrant un menu européen fictif aux intitulés complexes',
         },
@@ -139,8 +139,8 @@ export const COPY: Record<Lang, LandingCopy> = {
         },
         {
           number: '03',
-          title: 'Reçois une recommandation.',
-          body: 'Mishi tient compte de tes goûts, de ton budget et de tes préférences pour mettre un choix en avant.',
+          title: 'Choisis et garde tes envies.',
+          body: 'Mishi met un plat en avant, laisse tout le menu visible et garde tes découvertes pour plus tard.',
           screen: '/screens/recommend-fr.webp',
           alt: 'Écran de recommandation Mishi mettant en avant un plat',
         },
@@ -154,11 +154,11 @@ export const COPY: Record<Lang, LandingCopy> = {
       imageBody: 'Photo du plat, photo d’exemple ou illustration: l’origine du visuel reste toujours visible.',
       imageAlt: 'Écran Mishi avec une ballotine clairement identifiée comme photo d’exemple',
       preferenceTitle: 'Tes préférences comptent',
-      preferenceBody: 'Goûts, budget et préférences alimentaires influencent la recommandation. Tu gardes la main.',
-      preferenceAlt: 'Écran Mishi recommandant une ballotine selon les préférences et le budget',
-      allergyTitle: 'Pour les allergies, vérifie toujours',
-      allergyBody: 'Les ingrédients sont indicatifs. Pour une allergie, confirme toujours avec le restaurant.',
-      allergyAlt: 'Écran Mishi signalant les produits laitiers et proposant de corriger un avertissement',
+      preferenceBody: 'Besoins alimentaires, curiosité et niveau de piment restent sur ton appareil et orientent les choix.',
+      preferenceAlt: 'Tableau de bord du profil gourmand Mishi avec préférences et statistiques locales',
+      collectionTitle: 'Tes envies restent à portée de main',
+      collectionBody: 'Chaque plat gardé rejoint un carnet visuel avec son restaurant et son quartier.',
+      collectionAlt: 'Collection Mes envies avec plusieurs plats illustrés et une carte de Dakar',
       privacyTitle: 'Ta photo ne reste pas',
       privacyBody: 'La photo originale du menu est supprimée du stockage au plus tard 24 heures après l’envoi.',
       privacyAlt: 'Écran de capture Mishi cadrant un menu fictif',
@@ -236,9 +236,9 @@ export const COPY: Record<Lang, LandingCopy> = {
   },
   en: {
     features: [
-      { title: 'Scan the menu.', body: 'One photo is enough.' },
+      { title: 'Scan up to three pages.', body: 'One menu, even when it continues.' },
       { title: 'Understand every dish.', body: 'Clear, useful explanations.' },
-      { title: 'Get one recommendation.', body: 'One choice shaped around your preferences.' },
+      { title: 'Keep your cravings.', body: 'Find the dishes and places you want to try.' },
     ],
     chaosLines: ['14 dishes.', 'No photos.', 'The waiter is waiting.'],
     skip: 'Skip to content',
@@ -253,20 +253,20 @@ export const COPY: Record<Lang, LandingCopy> = {
     hero: {
       eyebrow: 'Your iPhone menu guide',
       title: 'You read the menu. The menu reads you.',
-      sub: 'One photo. One recommendation. Under 60 seconds.',
+      sub: 'Up to three pages. Every dish explained. One choice shaped around you.',
       demo: 'See the demo',
       storeAria: 'Download Mishi on the App Store',
       unavailable: 'Get launch updates',
     },
     how: {
       eyebrow: 'A confusing menu becomes a clear choice',
-      title: 'Three steps. One dish that fits.',
-      intro: 'Mishi turns a menu photo into useful explanations, then brings one choice forward.',
+      title: 'The whole menu. One clear choice.',
+      intro: 'Mishi joins the pages, explains the dishes and keeps the ones you want to try.',
       steps: [
         {
           number: '01',
-          title: 'Scan the menu.',
-          body: 'Frame the menu or choose a photo. Mishi also reads menus without pictures and attempts handwritten ones.',
+          title: 'Capture every page.',
+          body: 'Frame the menu or choose up to three photos. Mishi reads them together, in order.',
           screen: '/screens/scan-en.webp',
           alt: 'Mishi capture screen framing a fictional European menu with unfamiliar dish names',
         },
@@ -279,8 +279,8 @@ export const COPY: Record<Lang, LandingCopy> = {
         },
         {
           number: '03',
-          title: 'Get one recommendation.',
-          body: 'Mishi considers your tastes, budget, and preferences to bring one choice forward.',
+          title: 'Choose and keep your cravings.',
+          body: 'Mishi highlights one dish, keeps the full menu visible and saves your discoveries for later.',
           screen: '/screens/recommend-en.webp',
           alt: 'Mishi recommendation screen highlighting one dish',
         },
@@ -294,11 +294,11 @@ export const COPY: Record<Lang, LandingCopy> = {
       imageBody: 'Dish photo, example photo, or illustration: the source of every visual stays visible.',
       imageAlt: 'Mishi screen with a chicken ballotine clearly identified as an example photo',
       preferenceTitle: 'Your preferences matter',
-      preferenceBody: 'Taste, budget, and food preferences shape the recommendation. You stay in control.',
-      preferenceAlt: 'Mishi screen recommending a chicken ballotine based on preferences and budget',
-      allergyTitle: 'For allergies, always verify',
-      allergyBody: 'Ingredients are indicative. For an allergy, always confirm with the restaurant.',
-      allergyAlt: 'Mishi screen flagging dairy and offering a way to report a missing warning',
+      preferenceBody: 'Dietary needs, curiosity and spice tolerance stay on your device and help shape each choice.',
+      preferenceAlt: 'Mishi food profile dashboard with local preferences and activity statistics',
+      collectionTitle: 'Your cravings stay close',
+      collectionBody: 'Every saved dish joins a visual journal with its restaurant and neighborhood.',
+      collectionAlt: 'My cravings collection with illustrated dishes and a Dakar map',
       privacyTitle: 'Your photo does not stay',
       privacyBody: 'The original menu photo is removed from storage no later than 24 hours after upload.',
       privacyAlt: 'Mishi capture screen framing a fictional menu',
